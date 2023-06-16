@@ -1,11 +1,19 @@
-import { html, LitElement } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js';
+import { html, css, LitElement } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js';
 
 export class SliderPlugin extends LitElement {
+
+  static styles = css`
+    :host {
+      display: block;
+      width: 95%;
+    }
+  `;
   
   static properties = {
     min: { type: Number },
     max: { type: Number },
     value: { type: Number },
+    displayValue: { type: Number },
   };
   
   static getMetaConfig() {
@@ -40,6 +48,7 @@ export class SliderPlugin extends LitElement {
     this.min = 0;
     this.max = 100;
     this.value = 0;
+    this.displayValue = 0;
   }
 
   render() {
@@ -48,14 +57,19 @@ export class SliderPlugin extends LitElement {
         type="range"
         .min=${this.min}
         .max=${this.max}
-        .value=${this.value}
+        .value=${this.displayValue}
         @input=${this.handleInput}
+        @change=${this.handleChange}
       />
-      <p>Value: ${this.value}</p>
+      <p>Value: ${this.displayValue}</p>
     `;
   }
 
   handleInput(event) {
+    this.displayValue = event.target.value;
+  }
+
+  handleChange(event) {
     this.value = event.target.value;
     this.dispatchEvent(new CustomEvent('ntx-value-change', { detail: { value: this.value }, bubbles: true, composed: true }));
     this.setComponentValue(this.value);
