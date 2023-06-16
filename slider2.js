@@ -1,6 +1,6 @@
 import { html, css, LitElement } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js';
 
-export class NtxgallerySliderPlugin extends LitElement {
+export class GallerySliderPlugin extends LitElement {
 
   static styles = css`
     input[type="range"] {
@@ -38,6 +38,7 @@ export class NtxgallerySliderPlugin extends LitElement {
   static getMetaConfig() {
     return {
         controlName: 'Slider Plugin',
+        version: '1',
         fallbackDisableSubmit: false,
         pluginAuthor: 'Dan Stoll',
         pluginVersion: '1.0.0',
@@ -167,4 +168,4 @@ setFormVariableValue(value) {
 
 }
 
-customElements.define('ntxgallery-slider-plugin', NtxgallerySliderPlugin);
+customElements.define('gallery-slider-plugin', GallerySliderPlugin);
