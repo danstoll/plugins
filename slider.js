@@ -14,6 +14,7 @@ export class SliderPlugin extends LitElement {
     max: { type: Number },
     value: { type: Number },
     displayValue: { type: Number },
+    formVariable: { type: String },
   };
   
   static getMetaConfig() {
@@ -38,6 +39,11 @@ export class SliderPlugin extends LitElement {
           description: 'Current value of the slider',
           isValueField: true,
         },
+        formVariable: {
+          type: 'string',
+          title: 'Form Variable',
+          description: 'The form variable to store the value to'
+        },
       },
       events: ["ntx-value-change"],
     };
@@ -49,6 +55,7 @@ export class SliderPlugin extends LitElement {
     this.max = 100;
     this.value = 0;
     this.displayValue = 0;
+    this.formVariable = '';
   }
 
   render() {
@@ -72,14 +79,14 @@ export class SliderPlugin extends LitElement {
   handleChange(event) {
     this.value = event.target.value;
     this.dispatchEvent(new CustomEvent('ntx-value-change', { detail: { value: this.value }, bubbles: true, composed: true }));
-    this.setComponentValue(this.value);
+    this.setFormVariableValue(this.value);
   }
 
-  setComponentValue(value) {
+  setFormVariableValue(value) {
     if (window.NWF && window.NWF.FormFiller && window.NWF.FormFiller.Functions) {
       const runtime = window.NWF.FormFiller.Functions.getRuntime();
       if (runtime) {
-        runtime.execute('setComponentValue', this, value);
+        runtime.execute('setVariableValue', this.formVariable, value);
       }
     }
   }
